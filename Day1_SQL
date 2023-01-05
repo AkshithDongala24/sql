@@ -1,0 +1,9 @@
+Select
+-----------------
+select * from user_tables;
+
+desc employees;
+
+select * from employees;
+
+desc departments;
