@@ -8,4 +8,15 @@ Online editor:
   https://livesql.oracle.com/apex/livesql/file/content_GV8MU6SITA2V3VYI179FAJUCY.html
   
   singup the oracle account.
+  step 1: open Run SQL command Line
+  step 2: conn system/{password}
+  step 3: once you login with system then execute the below query
+  alter user hr identified by hr account unlock;
+  
+  step 4: login with hr user
+  conn hr/hr
+  
+  
+  
+  
 
