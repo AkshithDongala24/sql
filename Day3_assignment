@@ -1,0 +1,20 @@
+ 
+ Assignment 3:
+ 1. list of employees whose name start with letter A,L,M ,N without using like OPERATOR
+ 2. employees who is hired in year 2003.
+ 3. employees whose name start with letter A and end with letter a
+ 4. employees whose name start and end with same character. eg: Alexa, brinb, 
+ 5. employees whose first_name and last_name start with same character. eg: Allo arjun, Sonu Sood
+ 6. employees whose name contain exact 3 a.
+ 7. name which contain character underscore(_) in his name. eg: Jack_1
+ 8. print the below pattern
+    *
+	**
+	***
+	****
+	
+ 9. print the below pattern
+   *
+  ***
+ *****
+*******
