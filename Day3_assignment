@@ -8,10 +8,10 @@
  6. employees whose name contain exact 3 a.
  7. name which contain character underscore(_) in his name. eg: Jack_1
  8. print the below pattern
-    *
-	**
-	***
-	****
+*
+**
+***
+****
 	
  9. print the below pattern
    *
