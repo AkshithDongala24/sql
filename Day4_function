@@ -244,3 +244,37 @@ SELECT last_name,
               salary + 100) AS new_salary
   FROM employees
  ORDER BY department_id;
+ 
+ 
+ SELECT DECODE(1, 2,3,  8,2,  3,4,  9,2) FROM dual;
+
+
+--coalesce vs nvl
+SELECT NVL(10,5), NVL(NULL,10) FROM dual;
+SELECT coalesce(10,5), coalesce(NULL,10) FROM dual;
+SELECT coalesce(10,5,3,2,3,4,5), coalesce(NULL,NULL,2,3,4,5) FROM dual;
+
+
+
+--last_name,salary,day emp hired, sort it by day
+
+SELECT last_name,salary, to_char(hire_date,'day') AS DAY
+FROM employees
+ORDER BY to_char(hire_date-1,'d');
+
+SELECT last_name, salary, to_char(hire_date, 'day') AS DAY
+  FROM employees
+ ORDER BY DECODE(to_char(hire_date, 'DY'),
+                 'MON',
+                 1,
+                 'TUE',
+                 2,
+                 'WED',
+                 3,
+                 'THU',
+                 4,
+                 'FRI',
+                 5,
+                 'SAT',
+                 6,
+                 7);
