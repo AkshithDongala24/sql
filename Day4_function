@@ -1,0 +1,75 @@
+--single row function
+a. char FUNCTION
+b. NUMBER FUNCTION
+   MOD(num1,num2) equivalent TO %
+   TRUNC
+   ROUND
+   ABS
+   FLOOR
+   CEIL;
+c. DATE FUNCTION
+   1. add_months(date1,NUM)
+   2. months_between(date1, date2)
+   3. last_day(date1)
+   4. next_day(date1,'dy')
+   5. SYSDATE
+   
+--mod
+  SELECT MOD(10,3) FROM dual;
+  
+--abs
+  SELECT ABS(10), ABS(-10) FROM dual;
+  
+--floor
+  SELECT FLOOR(9.1), FLOOR(9.9), FLOOR(-9.1), FLOOR(-9.9) FROM dual;
+  
+--ceil
+  SELECT CEIL(9.1), CEIL(9.9), CEIL(-9.1), CEIL(-9.9) FROM dual;
+  
+--trunc(num,rounding)
+     01 3 5
+12847.38746
+       2 4
+       
+;
+SELECT TRUNC(12847.38746), TRUNC(12847.38746,2),  
+     TRUNC(12847.38746,3),  TRUNC(12847.38746,4)
+FROM dual;
+
+SELECT TRUNC(12847.38746,-2), TRUNC(12847.38746,-3),  TRUNC(12847.38746,-4)
+FROM dual; --12800	12000	10000
+
+
+--round
+SELECT round(12847.38746), round(12847.68746), round(12847.38746,2),  
+     round(12847.38746,3),  round(12847.38746,4)
+FROM dual;
+
+SELECT round(12847.38746,-2), round(12847.38746,-3),  round(12847.38746,-4)
+FROM dual;
+  
+
+--date function
+rule1: we can ADD OR substract THE NUMBER FROM DATE
+ SELECT SYSDATE+1, SYSDATE-2 FROM dual;
+ 
+rule2: we can substract 2 DATE
+
+SELECT last_name,hire_date, TRUNC(SYSDATE-hire_date) AS no_of_days,
+TRUNC((SYSDATE-hire_date)/30) AS no_of_months,
+TRUNC(months_between(SYSDATE,hire_date)) AS no_of_months1
+FROM employees;
+
+--add_months
+SELECT add_months(SYSDATE,3) FROM dual;
+
+--last_day
+SELECT last_day(SYSDATE) FROM dual;
+SELECT last_name,hire_date, last_day(hire_date) 
+FROM employees;
+
+
+--next_day
+SELECT next_day(SYSDATE,'sat') FROM dual;
+
+
