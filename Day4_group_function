@@ -1,0 +1,121 @@
+SELECT NULLIF(10,10), NULLIF(10,4) FROM DUAL;
+--IF EXP1 AND exp2 is same then return null else exp1
+
+
+--group function/multiple row function/aggregate function
+SUM
+MIN
+MAX
+AVG
+COUNT;
+
+RULE
+1. GROUP FUNCTION NOT INCLUDE NULL EXCEPT COUNT(*)
+
+SELECT * FROM employees;
+
+SELECT SUM(salary), MIN(salary), MAX(salary), COUNT(salary), AVG(salary),
+COUNT(*)
+FROM employees;
+
+SELECT AVG(salary), SUM(salary)/107 FROM employees;
+SELECT AVG(NVL(commission_pct,0)), SUM(commission_pct)/107 FROM employees;
+
+
+
+CREATE TABLE temp1(ID NUMBER);
+
+INSERT INTO temp1 VALUES (NULL);
+
+SELECT * FROM temp1;
+SELECT COUNT(ID), COUNT(*), COUNT(1) FROM temp1;
+
+
+
+ --department wise sum of salary
+SELECT department_id,SUM(salary)
+FROM employees
+GROUP BY department_id
+ORDER BY 1;
+
+
+--department wise sum of salary for emp whose salary>10000
+SELECT department_id,SUM(salary)
+FROM employees
+WHERE salary>10000
+GROUP BY department_id
+ORDER BY 1;
+
+
+--department wise sum of salary for emp 
+--and restrict the group sum(salary)>=50000
+
+SELECT department_id,SUM(salary)
+FROM employees
+WHERE SUM(salary)>50000  --error(cannot use group function in where clause)
+GROUP BY department_id
+ORDER BY 1;
+
+SELECT department_id,SUM(salary)
+FROM employees
+GROUP BY department_id
+HAVING SUM(salary)>50000  
+ORDER BY 1;
+
+FROM  => WHERE  => GROUP BY => HAVING => SELECT  => ORDER BY
+
+
+SELECT department_id,manager_id, SUM(salary)
+FROM employees
+GROUP BY department_id,manager_id
+ORDER BY 1,2;
+
+SELECT department_id,manager_id, SUM(salary)
+FROM employees
+GROUP BY manager_id,department_id
+ORDER BY 1,2;
+
+
+--department wise min and max salary for employees 
+--whose name contain letter a, e or i.
+--filter out the group whose max and  min salary are same
+--sort it by salary
+
+
+SELECT department_id, MIN(salary), MAX(salary)
+FROM employees
+WHERE LOWER(last_name) LIKE '%a%'
+OR LOWER(last_name) LIKE '%e%'
+OR LOWER(last_name) LIKE '%i%'
+GROUP BY department_id
+HAVING MIN(salary) != MAX(salary)
+ORDER BY MIN(salary);
+
+
+SELECT job_id,COUNT(*) 
+FROM employees
+GROUP BY job_id;
+
+
+SELECT COUNT(DISTINCT manager_id) FROM employees;
+
+SELECT manager_id,MIN(salary)
+FROM employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING MIN(salary)>6000
+ORDER BY MIN(salary) DESC;
+
+
+SELECT to_char(hire_date,'yyyy'), COUNT(*)
+FROM employees
+GROUP BY to_char(hire_date,'yyyy');
+
+--decode or case
+
+SELECT COUNT(*) AS total,
+SUM(DECODE(to_char(hire_date,'yyyy'),2003,1,0)) AS "2003",
+SUM(DECODE(to_char(hire_date,'yyyy'),2004,1,0)) AS "2004",
+SUM(DECODE(to_char(hire_date,'yyyy'),2005,1,0)) AS "2005",
+SUM(DECODE(to_char(hire_date,'yyyy'),2006,1,0)) AS "2006"
+FROM employees;
