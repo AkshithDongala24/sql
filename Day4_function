@@ -13,7 +13,10 @@ c. DATE FUNCTION
    3. last_day(date1)
    4. next_day(date1,'dy')
    5. SYSDATE
-   
+d. conversion FUNCTION
+   1. to_char(CHAR|NUM,'format_specifier')
+   2. to_date(CHAR,'format_specifier')
+   3. to_number(CHAR,'format_specifier')  
 --mod
   SELECT MOD(10,3) FROM dual;
   
@@ -73,3 +76,51 @@ FROM employees;
 SELECT next_day(SYSDATE,'sat') FROM dual;
 
 
+1. LIST OF emp hired ON feb MONTH OF leap YEAR
+SELECT last_name,hire_date
+FROM employees
+WHERE last_day(hire_date) LIKE '29%';
+
+
+2. FETCH last_name,salary, hire_date, apprisal_date
+  apprisal_date = 1st DAY OF week (Monday)  AFTER six MONTH OF hiring
+  
+select last_name,salary,hire_date,
+next_day(add_months(hire_date,6),'mon') as appraisal_date 
+from employees;
+
+
+  
+3. NAME,salary, no_of_year OF employee serving (ROUND it TO whole NUMBER)
+
+select last_name,salary,hire_date,
+ROUND(months_between(sysdate,hire_date)/12) as serving_years 
+from employees;
+
+
+--conversion function
+--implicit conversion
+
+SELECT 1+'1' FROM dual;
+SELECT '1,000.00'+1 FROM dual;
+
+
+      =>to_char         =>to_number
+DATE              CHAR              NUMBER
+       to_date<=         to_char<=
+
+
+--to_char
+DATE has dd mm yy hh mi SS;
+SELECT to_char(SYSDATE,'dd-mm-yyyy hh:mi:ss') FROM dual;
+
+--refer format specifier: https://docs.oracle.com/database/121/SQLRF/sql_elements004.htm#SQLRF00212
+
+--NAME,salary,hire_date(Monday,22 Jan 1999)
+SELECT last_name, salary, to_char(hire_date,'fmDay,dd Mon yyyy') AS hire_date
+FROM employees;
+
+--NAME,salary,hire_date(Monday,22nd of Jan,1999) and sort it by day hired, mon to sun
+select last_name,salary,to_char(hire_date,'fmDay,ddth "of" Mon,yyyy') AS joining_date 
+from employees 
+order by to_char(hire_date-1,'d');
