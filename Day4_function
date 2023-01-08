@@ -16,7 +16,20 @@ c. DATE FUNCTION
 d. conversion FUNCTION
    1. to_char(CHAR|NUM,'format_specifier')
    2. to_date(CHAR,'format_specifier')
-   3. to_number(CHAR,'format_specifier')  
+   3. to_number(CHAR,'format_specifier') 
+   
+   
+e. General FUNCTION
+   1. NVL(exp1, exp2)
+   2. COALESCE(exp1,exp2, exp3...., expn)
+   3. NVL2(exp1,exp2,exp3);
+   4. CASE
+   5. DECODE
+   6. NULLIF(exp1, exp2)
+
+
+
+ 
 --mod
   SELECT MOD(10,3) FROM dual;
   
@@ -110,7 +123,7 @@ DATE              CHAR              NUMBER
        to_date<=         to_char<=
 
 
---to_char
+--to_char => date to char
 DATE has dd mm yy hh mi SS;
 SELECT to_char(SYSDATE,'dd-mm-yyyy hh:mi:ss') FROM dual;
 
@@ -124,3 +137,110 @@ FROM employees;
 select last_name,salary,to_char(hire_date,'fmDay,ddth "of" Mon,yyyy') AS joining_date 
 from employees 
 order by to_char(hire_date-1,'d');
+
+
+--list of emp hired on Monday
+
+select last_name,salary,to_char(hire_date,'fmDay,ddth "of" Mon,yyyy') AS joining_date 
+FROM employees
+WHERE to_char(hire_date,'fmDAY')='MONDAY';
+
+select last_name,salary,to_char(hire_date,'fmDay,ddth "of" Mon,yyyy') AS joining_date 
+FROM employees
+WHERE TRIM(to_char(hire_date,'DAY'))='MONDAY';
+
+select last_name,salary,to_char(hire_date,'fmDay,ddth "of" Mon,yyyy') AS joining_date 
+FROM employees
+WHERE to_char(hire_date,'DY')='MON';
+
+
+--to_char => number to char
+
+SELECT to_char(123, '$999.00') FROM dual;
+
+SELECT last_name,to_char(salary,'99,99,999.00') AS salary FROM employees;
+
+
+--to_number => char to number
+SELECT '2,600.00' + 10 FROM dual;
+
+SELECT to_number('2,600.00','9,999.00') + 10 FROM dual;
+
+
+
+--to_date => char to date
+SELECT to_date('1-1-2020','dd-mm-yyyy') + 1 FROM dual;
+
+
+
+--general function
+
+1. NVL(exp1, exp2)
+   IF exp1 IS NULL THEN exp2 ELSE exp1
+   RULE: exp1 AND exp2 should be OF same TYPE.
+
+SELECT last_name,salary,NVL(commission_pct,0), 
+salary+salary*NVL(commission_pct,0) AS net_salary
+FROM employees;
+
+
+--last_name,salary,comm (if no comm then print no_comm, if comm then print the comm value)
+
+SELECT last_name,salary,NVL(to_char(commission_pct),'no_comm')
+FROM employees;
+
+
+--nvl2(exp1, exp2, exp3)
+  IF exp1 IS NOT NULL THEN exp2 ELSE exp3.
+  RULE: exp2 AND exp3 should be OF same TYPE
+
+
+--last_name,salary,comm (if no comm then print no_comm, if comm then print the comm)
+SELECT last_name,salary,commission_pct,NVL2(commission_pct,'comm','no_comm')
+FROM employees;
+
+
+
+--case
+
+--if emp working in dept 10 give hike of 500 bugs, 
+  if emp working in dept 20 give hike OF 600 bugs
+  if emp working in dept 30 give hike OF 1000 bugs
+  ELSE give hike OF 100 bugs
+    
+  
+SELECT last_name,salary,department_id,
+CASE WHEN department_id=10 THEN salary+500
+     WHEN department_id=20 THEN salary+600
+     WHEN department_id=30 THEN salary+1000
+     ELSE salary+100 
+END AS new_salary
+FROM employees
+ORDER BY department_id;
+
+
+SELECT last_name,salary,department_id,
+CASE department_id WHEN 10 THEN salary+500
+     WHEN 20 THEN salary+600
+     WHEN 30 THEN salary+1000
+     ELSE salary+100 
+END AS new_salary
+FROM employees
+ORDER BY department_id;
+
+
+
+--decode
+SELECT last_name,
+       salary,
+       department_id,
+       DECODE(department_id,
+              10,
+              salary + 500,
+              20,
+              salary + 600,
+              30,
+              salary + 1000,
+              salary + 100) AS new_salary
+  FROM employees
+ ORDER BY department_id;
